@@ -76,20 +76,20 @@ resource "aws_route_table_association" "main_association" {
 
 resource "aws_security_group" "main_sg" {
   name        = "${var.projeto}-${var.candidato}-sg"
-  description = "Permitir SSH de qualquer lugar e todo o trafego de saida"
+  description = "Permitir SSH de IPs confiáveis e todo o tráfego de saída"
   vpc_id      = aws_vpc.main_vpc.id
 
-  # Regras de entrada
+  # Regras de entrada (ajuste o CIDR para permitir SSH de um IP confiável)
   ingress {
-    description      = "Allow SSH from anywhere"
+    description      = "Allow SSH from trusted IP only"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    cidr_blocks      = ["198.51.100.0/24"]  # Substitua pelo seu IP confiável
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  # Regras de saida
+  # Regras de saída
   egress {
     description      = "Allow all outbound traffic"
     from_port        = 0
@@ -135,6 +135,7 @@ resource "aws_instance" "debian_ec2" {
     delete_on_termination = true
   }
 
+  # Automação para instalar o Nginx
   user_data = <<-EOF
               #!/bin/bash
               apt-get update -y
@@ -145,17 +146,19 @@ resource "aws_instance" "debian_ec2" {
               EOF
 
   tags = {
-    Name = "${var.projeto}-${var.candidato}-ec2"
+    Name        = "${var.projeto}-${var.candidato}-ec2"
+    Environment = "Production"
+    Owner       = var.candidato
   }
 }
 
 output "private_key" {
-  description = "Chave privada para acessar a instancia EC2"
+  description = "Chave privada para acessar a instância EC2"
   value       = tls_private_key.ec2_key.private_key_pem
   sensitive   = true
 }
 
 output "ec2_public_ip" {
-  description = "Endereco IP publico da instancia EC2"
+  description = "Endereço IP público da instância EC2"
   value       = aws_instance.debian_ec2.public_ip
 }
