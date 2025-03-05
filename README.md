@@ -72,3 +72,31 @@ Chave Privada Sensível: O campo private_key foi marcado como sensitive = true. 
 Recurso root_block_device com Volume de 20 GB: O volume de armazenamento foi mantido com 20 GB, que é uma quantidade mínima e suficiente para uma instalação do Nginx. Para produção, recomenda-se ajustar o tamanho do volume conforme a necessidade da aplicação.
 Melhoria sugerida:
 Backup de Dados: Para uma infraestrutura de produção, pode ser necessário configurar backups automáticos ou snapshots para o volume root_block_device, garantindo a recuperação de dados em caso de falhas.
+
+Instruções de Uso
+Pré-requisitos:
+Terraform instalado em sua máquina local.
+Conta AWS configurada com as credenciais necessárias.
+Chave de Acesso (AWS Access Key) configurada no seu ambiente.
+Passos para Inicializar e Aplicar a Configuração:
+Baixar o código Terraform:
+
+Faça o download do arquivo main.tf ou clone o repositório onde o código está armazenado.
+Configuração de Variáveis:
+Altere as variáveis no arquivo main.tf (como projeto e candidato) para personalizar o nome da infraestrutura.
+Inicializar o Terraform:
+
+No diretório onde o arquivo main.tf está localizado, execute o seguinte comando para inicializar o Terraform e baixar os provedores necessários:
+terraform init
+
+Executar o Plano do Terraform:
+Execute o comando para visualizar o que será criado:
+terraform plan
+
+Aplicar a Configuração:
+Após verificar o plano, execute o comando para aplicar a configuração e criar a infraestrutura na AWS:
+terraform apply
+
+Acessar a Instância EC2:
+Após a criação, o Terraform exibirá o IP público da instância EC2. Use a chave privada gerada para acessar a instância via SSH:
+ssh -i /caminho/para/sua/chave.pem ubuntu@<ec2_public_ip>
