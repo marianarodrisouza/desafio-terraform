@@ -115,26 +115,25 @@ resource "aws_route_table" "main_route_table" {
 resource "aws_route_table_association" "main_association" {
   subnet_id      = aws_subnet.main_subnet.id
   route_table_id = aws_route_table.main_route_table.id
-
-  tags = {
-    Name = "${var.projeto}-${var.candidato}-route_table_association"
-  }
 }
+
 
 resource "aws_security_group" "main_sg" {
   name        = "${var.projeto}-${var.candidato}-sg"
   description = "Permitir SSH de IPs confiáveis e todo o tráfego de saída"
   vpc_id      = aws_vpc.main_vpc.id
 
+  # Regras de entrada (ajuste o CIDR para permitir SSH de um IP confiável)
   ingress {
     description      = "Allow SSH from trusted IP only"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["198.51.100.0/24"]  # Substitua pelo seu IP confiável
+    cidr_blocks      = ["198.51.100.0/24"]  
     ipv6_cidr_blocks = ["::/0"]
   }
 
+  # Regras de saída
   egress {
     description      = "Allow all outbound traffic"
     from_port        = 0
@@ -180,6 +179,7 @@ resource "aws_instance" "debian_ec2" {
     delete_on_termination = true
   }
 
+  # Automação para instalar o Nginx
   user_data = <<-EOF
               #!/bin/bash
               apt-get update -y
@@ -206,6 +206,7 @@ output "ec2_public_ip" {
   description = "Endereço IP público da instância EC2"
   value       = aws_instance.debian_ec2.public_ip
 }
+
 
 
 Descrição Técnica das Alterações
