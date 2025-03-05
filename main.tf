@@ -68,18 +68,15 @@ resource "aws_route_table" "main_route_table" {
 resource "aws_route_table_association" "main_association" {
   subnet_id      = aws_subnet.main_subnet.id
   route_table_id = aws_route_table.main_route_table.id
-
-  tags = {
-    Name = "${var.projeto}-${var.candidato}-route_table_association"
-  }
 }
+
 
 resource "aws_security_group" "main_sg" {
   name        = "${var.projeto}-${var.candidato}-sg"
   description = "Permitir SSH de IPs confiáveis e todo o tráfego de saída"
   vpc_id      = aws_vpc.main_vpc.id
 
-  # Regras de entrada (ajuste do CIDR para permitir SSH de um IP confiável)
+  # Regras de entrada (ajuste o CIDR para permitir SSH de um IP confiável)
   ingress {
     description      = "Allow SSH from trusted IP only"
     from_port        = 22
