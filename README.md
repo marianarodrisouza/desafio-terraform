@@ -44,18 +44,18 @@ O script user_data garante que o sistema operacional da instância EC2 seja atua
 As chaves privadas e o IP público da instância são retornados como outputs, fornecendo os dados necessários para acessar a instância remotamente.
 
 Descrição Técnica das Alterações
-1. Melhorias de Segurança:
-Restrição de Acesso SSH: Embora o código original permita o acesso SSH de qualquer lugar (0.0.0.0/0), para aumentar a segurança, seria interessante restringir o acesso SSH para IPs específicos ou um intervalo de IPs conhecidos, em vez de permitir acesso irrestrito. Isso reduz as chances de ataques de força bruta.
+1. Melhorias de Segurança
+Reforço na segurança do grupo de segurança (Security Group):
+Atualmente, o código permite SSH de qualquer lugar (0.0.0.0/0), o que pode ser um risco. Podemos melhorar isso ao restringir o acesso SSH para um IP específico (ou um intervalo de IPs confiáveis).
+Outra melhoria seria adicionar regras para limitar o tráfego de entrada e saída, caso necessário.
 Alteração proposta:
-hcl
-CopiarEditar
 ingress {
-  description      = "Allow SSH from a specific IP"
+  description      = "Allow SSH from trusted IP only"
   from_port        = 22
   to_port          = 22
   protocol         = "tcp"
-  cidr_blocks      = ["YOUR_IP/32"]
-  ipv6_cidr_blocks = ["YOUR_IPV6/128"]
+  cidr_blocks      = ["198.51.100.0/24"] 
+  ipv6_cidr_blocks = ["::/0"]
 }
 
 Isso permite que apenas um IP ou rede específica acesse a instância via SSH, garantindo um nível adicional de segurança.
@@ -72,4 +72,3 @@ Chave Privada Sensível: O campo private_key foi marcado como sensitive = true. 
 Recurso root_block_device com Volume de 20 GB: O volume de armazenamento foi mantido com 20 GB, que é uma quantidade mínima e suficiente para uma instalação do Nginx. Para produção, recomenda-se ajustar o tamanho do volume conforme a necessidade da aplicação.
 Melhoria sugerida:
 Backup de Dados: Para uma infraestrutura de produção, pode ser necessário configurar backups automáticos ou snapshots para o volume root_block_device, garantindo a recuperação de dados em caso de falhas.
-
