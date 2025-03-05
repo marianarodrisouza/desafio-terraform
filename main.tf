@@ -79,13 +79,13 @@ resource "aws_security_group" "main_sg" {
   description = "Permitir SSH de IPs confiáveis e todo o tráfego de saída"
   vpc_id      = aws_vpc.main_vpc.id
 
-  # Regras de entrada (ajuste o CIDR para permitir SSH de um IP confiável)
+  # Regras de entrada (ajuste do CIDR para permitir SSH de um IP confiável)
   ingress {
     description      = "Allow SSH from trusted IP only"
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["198.51.100.0/24"]  # Substitua pelo seu IP confiável
+    cidr_blocks      = ["198.51.100.0/24"]  
     ipv6_cidr_blocks = ["::/0"]
   }
 
