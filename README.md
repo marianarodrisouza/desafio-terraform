@@ -123,7 +123,7 @@ resource "aws_security_group" "main_sg" {
   description = "Permitir SSH de IPs confiaveis e todo o trafego de saida"
   vpc_id      = aws_vpc.main_vpc.id
 
-  # Regras de entrada (ajuste o CIDR para permitir SSH de um IP confiável)
+ Regras de entrada (ajuste o CIDR para permitir SSH de um IP confiável)
   ingress {
     description      = "Allow SSH from trusted IP only"
     from_port        = 22
@@ -133,7 +133,7 @@ resource "aws_security_group" "main_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 
-  # Regras de saída
+  Regras de saída
   egress {
     description      = "Allow all outbound traffic"
     from_port        = 0
@@ -179,7 +179,7 @@ resource "aws_instance" "debian_ec2" {
     delete_on_termination = true
   }
 
-  # Automação para instalar o Nginx
+  Automação para instalar o Nginx
   user_data = <<-EOF
               #!/bin/bash
               apt-get update -y
