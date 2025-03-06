@@ -1,4 +1,4 @@
-Descrição Técnica do Código Terraform
+#Descrição Técnica do Código Terraform
 
 O código fornecido é responsável por provisionar uma infraestrutura na AWS usando Terraform. Ele cria uma série de recursos, como uma VPC, sub-rede, gateway de internet, tabela de rotas, grupo de segurança, instância EC2 com Debian 12, e uma chave SSH. O código também gera uma chave privada para acesso seguro à instância EC2 e configura um script de inicialização para a instalação do Debian.
 
