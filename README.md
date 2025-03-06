@@ -120,7 +120,7 @@ resource "aws_route_table_association" "main_association" {
 
 resource "aws_security_group" "main_sg" {
   name        = "${var.projeto}-${var.candidato}-sg"
-  description = "Permitir SSH de IPs confiáveis e todo o tráfego de saída"
+  description = "Permitir SSH de IPs confiaveis e todo o trafego de saida"
   vpc_id      = aws_vpc.main_vpc.id
 
   # Regras de entrada (ajuste o CIDR para permitir SSH de um IP confiável)
@@ -129,7 +129,7 @@ resource "aws_security_group" "main_sg" {
     from_port        = 22
     to_port          = 22
     protocol         = "tcp"
-    cidr_blocks      = ["198.51.100.0/24"]  
+    cidr_blocks      = ["177.37.170.177/32"]  
     ipv6_cidr_blocks = ["::/0"]
   }
 
@@ -169,7 +169,7 @@ resource "aws_instance" "debian_ec2" {
   instance_type   = "t2.micro"
   subnet_id       = aws_subnet.main_subnet.id
   key_name        = aws_key_pair.ec2_key_pair.key_name
-  security_groups = [aws_security_group.main_sg.name]
+  security_groups = [aws_security_group.main_sg.id]
 
   associate_public_ip_address = true
 
@@ -194,19 +194,19 @@ resource "aws_instance" "debian_ec2" {
     Environment = "Production"
     Owner       = var.candidato
   }
+  depends_on = [aws_security_group.main_sg]  # Garante que o Security Group será criado primeiro
 }
 
 output "private_key" {
-  description = "Chave privada para acessar a instância EC2"
+  description = "Chave privada para acessar a instancia EC2"
   value       = tls_private_key.ec2_key.private_key_pem
   sensitive   = true
 }
 
 output "ec2_public_ip" {
-  description = "Endereço IP público da instância EC2"
+  description = "Endereço IP público da instancia EC2"
   value       = aws_instance.debian_ec2.public_ip
 }
-
 
 
 Descrição Técnica das Alterações
