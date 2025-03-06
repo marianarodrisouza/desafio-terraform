@@ -43,7 +43,7 @@ A instância EC2 é provisionada com a AMI Debian 12, usando a chave SSH para ac
 O script user_data garante que o sistema operacional da instância EC2 seja atualizado assim que ela for inicializada.
 As chaves privadas e o IP público da instância são retornados como outputs, fornecendo os dados necessários para acessar a instância remotamente.
 
-Arquivo main.tf Modificado: # Código Terraform modificado
+# Arquivo main.tf Modificado: # Código Terraform modificado
 
 provider "aws" {
   region = "us-east-1"
@@ -209,7 +209,7 @@ output "ec2_public_ip" {
 }
 
 
-Descrição Técnica das Alterações
+# Descrição Técnica das Alterações
 1. Melhorias de Segurança
 Reforço na segurança do grupo de segurança (Security Group):
 Atualmente, o código permite SSH de qualquer lugar (0.0.0.0/0), o que pode ser um risco. Podemos melhorar isso ao restringir o acesso SSH para um IP específico (ou um intervalo de IPs confiáveis).
